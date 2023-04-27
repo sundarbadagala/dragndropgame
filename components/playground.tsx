@@ -50,6 +50,7 @@ function Example() {
 
   useEffect(() => {
     const isValid = atomsWord.includes(undefined)
+    console.log('');
     if (atomsWord.length !== 0 && !isValid && atomsWord.length === blocks.length) {
       setIsSubmitEnabled(true)
     }else{
@@ -57,7 +58,7 @@ function Example() {
     }
   }, [atomsWord, blocks])
 
-  const handleDrag = (e: any, id: any) => {
+  const handleDrag = (id: any) => {
     const offset = document.getElementById(`${id}`)?.getBoundingClientRect();
     const oX = Math.floor(offset?.left || 0)
     const oY = Math.floor(offset?.top || 0)
@@ -146,7 +147,7 @@ function Example() {
                   cursor: "grabbing"
                 }}
                 transition={{ duration: 0.6 }}
-                onDrag={(e) => handleDrag(e, index)}
+                onDrag={(e) => handleDrag(index)}
                 id={`${index}`}
                 onDragEnd={() => handleSetDragsTrue()}
               >
