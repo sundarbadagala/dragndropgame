@@ -4,13 +4,32 @@ interface IContext {
   count: number
 }
 
-const GameContext = createContext({ count:0, setCount:(count: any)=>{} });
+const GameContext = createContext({
+  count: 0,
+  setCount: (count: any) => { },
+  isModalEnable: false,
+  setIsModalEnable: (isModalEnable: any) => { },
+  modalType: 'success',
+  setModalType: (modalType: any) => { }
+});
 
 function GameProvider({ children }: any) {
   const [count, setCount] = useState(2);
-  return <GameContext.Provider value={{ count, setCount }}>
-    {children}
-  </GameContext.Provider>;
+  const [isModalEnable, setIsModalEnable] = useState(false)
+  const [modalType, setModalType] = useState('fail')
+  return (
+    <GameContext.Provider
+      value={{
+        count,
+        setCount,
+        isModalEnable,
+        setIsModalEnable,
+        modalType,
+        setModalType
+      }}>
+      {children}
+    </GameContext.Provider>
+  );
 }
 
 export { GameContext, GameProvider };

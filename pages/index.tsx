@@ -2,6 +2,7 @@ import { useState, useContext } from "react"
 import { Roboto } from 'next/font/google'
 import Playground from '@/components/playground'
 import Start from "@/components/start"
+import Modal from "@/elements/modal"
 
 import {GameContext} from '@/state/contextApi'
 
@@ -21,7 +22,7 @@ function Index() {
   
   return (
     <main className={`wrapper ${roboto.className}`}>
-      <button onClick={()=>setCount(10)}>Click</button>
+      <Modal/>
       {
         isEnable ? <Playground /> : <Start handleStart={handleStart} />
       }

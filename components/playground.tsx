@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { GameContext } from '@/state/contextApi'
 import { levelonewords } from '@/utils/words'
 import { useRandom } from '@/hooks/useRandom'
 import { useRandomChars } from '@/hooks/useRandomChars'
-import {getCorrectedOffset} from '@/utils/helpers'
+import { getCorrectedOffset } from '@/utils/helpers'
 
 function Example() {
+  const { setIsModalEnable, setModalType } = useContext(GameContext)
   const [hydrated, setHydrated] = useState(false)
   const [posX, setPosX] = useState<any>([])
   const [atoms, setAtoms] = useState<any>([])
@@ -73,7 +75,7 @@ function Example() {
         const posY = Math.floor(Math.random() * 500)
         newAtoms[id] = { ...newAtoms[id], posX, posY }
         setAtoms(newAtoms)
-        alert('already word is there')
+        handleModal('shock')
         setIsDragged(false)
       } else {
         const newAtoms = [...atoms]
@@ -107,17 +109,21 @@ function Example() {
   }
   const handleSubmit = () => {
     if (blocks === atomsWord.join('')) {
-      alert('success')
+      handleModal('success')
       handleRandom()
       getAtoms()
       setAtomsWord([])
       setIsSubmitEnabled(false)
     } else {
-      alert('fail')
+      handleModal('fail')
       getAtoms()
       setIsSubmitEnabled(false)
       setAtomsWord([])
     }
+  }
+  const handleModal = (type: any) => {
+    setIsModalEnable(true)
+    setModalType(type)
   }
 
   useEffect(() => {
@@ -126,7 +132,7 @@ function Example() {
   if (!hydrated) {
     return null
   }
-  
+
   return (
     <div className='wrapper'>
       <div className='blocks'>
