@@ -31,7 +31,11 @@ export default function Modal() {
                         >
                             <Image src={emoji} alt='emoji' className='modal-emoji' />
                         </motion.div>
-                        {message}
+                        <motion.div 
+                            className='modal-message'
+                        >
+                            {message}
+                        </motion.div>
                     </motion.div>
                 </div>
 

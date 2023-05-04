@@ -5,15 +5,15 @@ import ShockImg from '@/public/shock.png'
 export default function getModalType(type: any = 'success') {
     const details  = {
         'success' : {
-            message: 'excellent',
+            message: 'succes',
             emoji : SuccessImg
         },
         'fail':{
-            message:'wasted',
+            message:'failed',
             emoji : FailImg
         },
         'shock' : {
-            message:'already is there',
+            message:'already word is there',
             emoji: ShockImg
         }
     }
