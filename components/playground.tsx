@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { levelonewords } from '@/utils/words'
 import { useRandom } from '@/hooks/useRandom'
 import { useRandomChars } from '@/hooks/useRandomChars'
+import {getCorrectedOffset} from '@/utils/helpers'
 
 function Example() {
   const [hydrated, setHydrated] = useState(false)
@@ -50,10 +51,9 @@ function Example() {
 
   useEffect(() => {
     const isValid = atomsWord.includes(undefined)
-    console.log('');
     if (atomsWord.length !== 0 && !isValid && atomsWord.length === blocks.length) {
       setIsSubmitEnabled(true)
-    }else{
+    } else {
       setIsSubmitEnabled(false)
     }
   }, [atomsWord, blocks])
@@ -64,24 +64,36 @@ function Example() {
     const oY = Math.floor(offset?.top || 0)
     const isPosXValid = posX.some((item: any) => item === oX)
     const findIndex = posX.findIndex((item: any) => item === oX)
-    const isPosYValid = 0 === oY || -5 >= oY || 5 >= oY
-    if (isPosXValid && isPosYValid && isDragged) {
-      const newAtoms = [...atoms]
-      newAtoms[id] = { ...newAtoms[id], isMatch: true }
-      const el = document.getElementById(`${id}`)?.innerText
-      setAtoms(newAtoms)
-      setIsDragged(false)
-      const newAtomsWord = [...atomsWord]
-      newAtomsWord[findIndex] = el
-      setAtomsWord(newAtomsWord)
-      setIsDraggable(false)
+    const isPosYValid = 0 === oY || -2 >= oY || 2 >= oY
+    const { isMatch } = atoms[id]
+    if (isPosXValid && isPosYValid && isDragged && !isMatch) {
+      if (atomsWord[findIndex]) {
+        const newAtoms = [...atoms]
+        const posX = Math.floor(Math.random() * 1000)
+        const posY = Math.floor(Math.random() * 500)
+        newAtoms[id] = { ...newAtoms[id], posX, posY }
+        setAtoms(newAtoms)
+        alert('already word is there')
+        setIsDragged(false)
+      } else {
+        const newAtoms = [...atoms]
+        newAtoms[id] = { ...newAtoms[id], isMatch: true }
+        const el = document.getElementById(`${id}`)?.innerText
+        setAtoms(newAtoms)
+        setIsDragged(false)
+        const newAtomsWord = [...atomsWord]
+        newAtomsWord[findIndex] = el
+        setAtomsWord(newAtomsWord)
+        setIsDraggable(false)
+      }
     } else {
       const { isMatch } = atoms[id]
       if ((!isPosXValid || !isPosYValid) && isMatch && isDragElse) {
+        const newIndex = getCorrectedOffset(oX)
         const newAtoms = [...atoms]
         newAtoms[id] = { ...newAtoms[id], isMatch: false }
         const newAtomsWord = [...atomsWord]
-        newAtomsWord[findIndex] = undefined
+        newAtomsWord[newIndex] = undefined
         setAtomsWord(newAtomsWord)
         setAtoms(newAtoms)
         setIsDragElse(false)
@@ -114,6 +126,7 @@ function Example() {
   if (!hydrated) {
     return null
   }
+  
   return (
     <div className='wrapper'>
       <div className='blocks'>
@@ -137,7 +150,7 @@ function Example() {
               <motion.div
                 key={index}
                 className='atom flex-center'
-                style={{ background: `${item.isMatch ? '#a8ffa3' : '#fff'}`, }}
+                style={{ background: `${item.isMatch ? '#83bff7' : '#fff'}`, }}
                 initial={{ x: item.posX, y: item.posY }}
                 animate={{ x: item.posX, y: item.posY }}
                 drag={isDraggable}
