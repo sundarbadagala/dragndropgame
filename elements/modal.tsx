@@ -2,10 +2,11 @@ import Image from 'next/image'
 import { useContext, useEffect } from 'react'
 import { easeIn, motion, AnimatePresence } from 'framer-motion'
 import { GameContext } from '@/state/contextApi'
-import getModalType from '@/utils/getModalType'
+import getModalType from '@/helpers/getModalType'
 
 export default function Modal() {
-    const { isModalEnable, setIsModalEnable, modalType, setModalType } = useContext(GameContext)
+    const context = useContext(GameContext)
+    const { isModalEnable, setIsModalEnable, modalType }  = {...context}
     useEffect(() => {
         if (isModalEnable) {
             setTimeout(() => {
